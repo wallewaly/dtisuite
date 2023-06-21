@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+   <name>DTISuite</name>
+   <key>dtisuite</key>
+   <state>stable</state>
+   <description>
+      <short>
+         <en><![CDATA[DTI Suite is a custom plugin developed by Walison Santos for the DTI Team of Engineering Brasil.]]></en>
+      </short>
+      <long>
+      <en>
+      DTI Suite is a custom plugin developed by Walison Santos for the DTI Team of Engineering Brasil.
+      </en>
+      </long>
+   </description>
+   <homepage></homepage>
+   <download>https://github.com/wallewaly/dtisuite/releases</download>
+   <issues>https://github.com/wallewaly/dtisuite/issues</issues>
+   <readme>https://raw.githubusercontent.com/wallewaly/dtisuite/master/README.md</readme>
+   <authors>
+      <author>WalleWaly</author>
+   </authors>
+   <versions>
+      <version>
+         <num>0.1.0</num>
+         <compatibility>~10.0.2</compatibility>
+         <download_url>https://github.com/wallewaly/dtisuite/releases/download/0.1.0/dtisuite-0.1.0.zip</download_url>
+      </version>
+   </versions>
+   <langs>
+      <lang>pt_BR</lang>
+   </langs>
+   <license>AGPLv3+</license>
+   <tags>
+         <en>
+            <tag>customization</tag>
+         </en>
+   </tags>
+</root>
