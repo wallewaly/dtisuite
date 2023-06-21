@@ -28,6 +28,10 @@
  * -------------------------------------------------------------------------
  */
 
+if (!defined('GLPI_ROOT')) {
+  die("Sorry. You can't access directly to this file");
+}
+
 class PluginDtisuiteProfile extends Profile
 {
 
@@ -40,9 +44,10 @@ class PluginDtisuiteProfile extends Profile
               'field'     => 'plugin_dtisuite_gen_terms',
               'rights'    => [READ => __('Read')]],
             
-        [     'label'     => __('Relatório de troca de CDC', 'dtisuite'),
-        'field'     => 'plugin_dtisuite_cdc_report',
-        'rights'    => [READ => __('Read')]]];
+        [     
+              'label'     => __('Relatório de troca de CDC', 'dtisuite'),
+              'field'     => 'plugin_dtisuite_cdc_report',
+              'rights'    => [READ => __('Read')]]];
 
       return $rights;
    }

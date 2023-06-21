@@ -63,21 +63,27 @@ function plugin_init_dtisuite() {
             ]
         );
 
-        //Add menu entry
-        $PLUGIN_HOOKS['menu_toadd']['dtisuite'] = ['management'  => 'PluginDtisuiteMenu'];
-
-        //Add config menu entry
-        $PLUGIN_HOOKS['config_page']['dtisuite'] = 'front/config.php';
+        $Plugin->registerClass(
+            'PluginDtisuiteUserinfo',
+            ['addtabon' => ['User']
+            ]
+        );
 
         //Capture events data on action
         $PLUGIN_HOOKS['pre_item_update']['dtisuite'] = [
-            'Computer' => 'dtisuite_itemimeiupdate_called',
-            'Phone' => 'dtisuite_itemimeiupdate_called'
+            'Computer' => 'plugin_dtisuite_itemimeiupdate_called',
+            'Phone' => 'plugin_dtisuite_itemimeiupdate_called'
         ];
 
         //Add form on top of item page
         $PLUGIN_HOOKS['pre_item_form']['dtisuite']
-        = 'plugin_dtisuite_computerpreItemForm';
+        = 'plugin_dtisuite_preItemForm';
+
+        //Add menu entry
+        $PLUGIN_HOOKS['menu_toadd']['dtisuite'] = ['management'  => 'PluginDtisuiteMenu'];
+
+        //Add config menu entry
+        //$PLUGIN_HOOKS['config_page']['dtisuite'] = 'front/config.php';
 
         // Css file
         if (strpos($_SERVER['REQUEST_URI'] ?? '', Plugin::getPhpDir('dtisuite', false)) !== false) {

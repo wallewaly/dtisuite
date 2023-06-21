@@ -28,6 +28,10 @@
  * -------------------------------------------------------------------------
  */
 
+if (!defined('GLPI_ROOT')) {
+  die("Sorry. You can't access directly to this file");
+}
+
 class PluginDtisuiteMenu extends CommonGLPI
 {
 
@@ -35,7 +39,7 @@ class PluginDtisuiteMenu extends CommonGLPI
 
    static function getMenuName() {
 
-      return __('Gerador de termos (v2)', 'dtisuite');
+      return __('Gerador de termos (Novo)', 'dtisuite');
    }
 
    static function getMenuContent() {

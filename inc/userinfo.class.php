@@ -31,10 +31,10 @@
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
+ 
+class PluginDtisuiteUserinfo extends CommonDBTM {
 
-class PluginDtisuiteImeiinfo extends CommonDBTM {
-
-    static function UpdateImeiInfo($item){
+    static function UpdateUserInfo($item){
         global $DB;
         
         $compid = $_POST['id'];
@@ -106,7 +106,7 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
                 if (!isset($check) || $check = "A113"){
     
                     $DB->insert(
-                        'glpi_plugin_dtisuite_imeis', [
+                        'glpi_plugin_additionaldata_imeis', [
                             'id' => '0',
                             "{$typeequipment}s_id" => "$compid",
                             'imei_a' => "$imeia",
@@ -117,65 +117,31 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
             }             
         }
     }
+
+    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
+
+        if ($item->getType() == 'User') {
+            
+                return __('Dados do colaborador', 'Dados do colaborador');
+            
+            return '';
+        }
+        return '';
+    }
     
-    static function DisplayImei($item){
-        global $DB;
-
-        switch (get_class($item)) {
-            case 'Computer':
-                $typeequipment = 'computer';
-            break;
-
-            case 'Phone':
-                $typeequipment = 'phone';
-            break;
-
-        }
-
-            $query ="SELECT ".$typeequipment."types_id as typeid, b.name as typename
-                    FROM `glpi_".$typeequipment."s` AS a
-                    JOIN glpi_".$typeequipment."types AS b ON a.".$typeequipment."types_id = b.id
-                    WHERE a.id = '".$_GET['id']."'
-            ";
-
-            $result=$DB->query($query);
-            $first=$result->fetch_assoc();
-            
-            if(isset($first['typeid']) && !empty($first['typeid'])){
-                $typeid = $first['typeid'];
-            }
-            if(isset($first['typename']) && !empty($first['typename'])){
-                $type=$first['typename'];
-            }
-            
-
+    
+     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0){
         
-        if ($item::getType() === Phone::getType() || strtoupper($type) == "CELULAR" || strtoupper($type) == "TABLET" || strtoupper($type) == "MODEM"){
-        
-        $query ="SELECT *
-                 FROM `glpi_plugin_dtisuite_imeis`
-                 WHERE ".$typeequipment."s_id = '".$_GET['id']."'
-        ";
-
-        $result=$DB->query($query);
-        $first=$result->fetch_assoc();
-        
-        if(isset($first['imei_a']) && !empty($first['imei_a'])){
-
-            $imeia = $first['imei_a'];
-
-        }
-        else{
-            $imeia = '';
-        }
-
-        if(isset($first['imei_b']) && !empty($first['imei_b'])){
-
-            $imeib = $first['imei_b'];
-        }
-        else{
-            $imeib = '';
-        }
+    
+        echo'<div class="card m-n2 border-0 shadow-none">
+                                <div class="card-header">
+                                    <div class="ribbon ribbon-bookmark ribbon-top ribbon-start bg-blue s-1">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <h4 class="card-title ps-4">
+                                        Dados do colaborador
+                                    </h4>
+                                </div>';
 
             echo '<div class="card-body d-flex flex-wrap">';
             echo '  <div class="col-12 col-xxl-12 flex-column">';
@@ -184,24 +150,49 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
             echo '              <div class="row flex-row">';
 
             echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
-	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >IMEI A</label>';
+	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >Ticket de Onboarding</label>';
             echo '                      <div class="col-xxl-7  field-container">';
-		    echo '                          <input type="text" class="form-control " name="imeia" id="imeia" value="'.$imeia.'" required>';
+		    echo '                          <input type="text" class="form-control " name="ticket" id="ticket" value="">';
             echo '	                    </div>';
             echo '                  </div>';
 
             echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
-	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >IMEI B</label>';
+	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >CPF</label>';
             echo '                      <div class="col-xxl-7  field-container">';
-		    echo '                          <input type="text" class="form-control " name="imeib" id="imeib" value="'.$imeib.'">';
+		    echo '                          <input type="text" class="form-control " name="cpf" id="cpf" value="" required>';
+            echo '	                    </div>';
+            echo '                  </div>';
+
+            echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
+	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >Razão social</label>';
+            echo '                      <div class="col-xxl-7  field-container">';
+		    echo '                          <input type="text" class="form-control " name="razaosocial" id="razaosocial" value="">';
+            echo '	                    </div>';
+            echo '                  </div>';
+
+            echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
+	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >CNPJ</label>';
+            echo '                      <div class="col-xxl-7  field-container">';
+		    echo '                          <input type="text" class="form-control " name="cnpj" id="cnpj" value="">';
+            echo '	                    </div>';
+            echo '                  </div>';
+
+            echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
+	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >RDA</label>';
+            echo '                      <div class="col-xxl-7  field-container">';
+		    echo '                          <input type="text" class="form-control " name="rda" id="rda" value="">';
             echo '	                    </div>';
             echo '                  </div>';
 
             echo '              </div>';
             echo '          </div>';
             echo '      </div>';
+            echo'  <button class="btn btn-primary me-2 float-end mt-sm-3" name="update" id="update">
+                    <i class="far fa-save"></i>
+                    <span>Salvar</span>&nbsp;
+                  </button>';
             echo '  </div>';
             echo '</div>';
-        }
+            
     }      
 }
