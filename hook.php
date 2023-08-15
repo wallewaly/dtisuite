@@ -96,7 +96,7 @@ function plugin_dtisuite_itemimeiupdate_called (CommonDBTM $item) {
     PluginDtisuiteImeiinfo::UpdateImeiInfo($item);
 }
 
-function plugin_dtisuite_preItemForm($params){
+function plugin_dtisuite_computerpreItemForm($params){
     if (isset($params['item']) && $params['item'] instanceof CommonDBTM) {
        switch (get_class($params['item'])) {
           case 'Computer':
@@ -106,18 +106,6 @@ function plugin_dtisuite_preItemForm($params){
            case 'Phone':
                 PluginDtisuiteImeiinfo::DisplayImei($params['item']);
              break;
-      }
-   }
-}
-
-/*function plugin_dtisuite_postItemForm($params){
-   if (isset($params['item']) && $params['item'] instanceof CommonDBTM) {
-      switch (get_class($params['item'])) {
-
-         case 'User':
-            PluginDtisuiteUserinfo::DisplayUserInfo($params['item']);
-         break;
-
-      }
-   }
-}*/
+       }
+    }
+ }

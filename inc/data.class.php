@@ -28,10 +28,6 @@
  * -------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
-}
-
 class PluginDtisuiteData extends CommonDBTM {
 
     function get_equipment_type($itemtype_id){

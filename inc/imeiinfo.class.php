@@ -27,11 +27,7 @@
  * @link      https://github.com/wallewaly/dtisuie
  * -------------------------------------------------------------------------
  */
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
+ 
 class PluginDtisuiteImeiinfo extends CommonDBTM {
 
     static function UpdateImeiInfo($item){
@@ -54,35 +50,26 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
 
         if ($item::getType() !== Monitor::getType() && $item::getType() === Phone::getType() OR $type == 8 OR $type == null){
         
-            $query ="SELECT id
-            FROM `glpi_plugin_dtisuite_imeis`
-            WHERE ".$typeequipment."s_id = '$compid'
-            ";
+        $query ="SELECT id
+        FROM `glpi_plugin_dtisuite_imeis`
+        WHERE ".$typeequipment."s_id = '$compid'
+        ";
 
-            $result = $DB->query($query);
-            $first  = $result->fetch_assoc();
-            if(isset($first['id']) && !empty($first['id'])){
-
-                $check = $first['id'];
-            }
-
-            else{
-
-                $check = 'A113';
-
-            }
+        $result = $DB->query($query);
+        $first  = $result->fetch_assoc();
+        $check = $first['id'];
 
         }
         
         if (isset($_POST['update'])){
 
-            if (isset($imeia) && !empty($imeia) && !empty($imeib) && $imeia == $imeib) {
+            if (isset($imeia) & !empty($imeia) & $imeia == $imeib) {
 
                 Session::addMessageAfterRedirect('IMEI A e IMEI B não podem ser iguais');
             
             } else {
             
-                if (isset($check) && $check != "A113" && isset($imeib)){
+                if (isset($check) && isset($imeib)){
 
                     $DB->update(
                         'glpi_plugin_dtisuite_imeis', [
@@ -93,7 +80,7 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
                         );
                 
                 }
-                if (isset($check) && $check != "A113" && isset($imeia) && !empty($imeia)){
+                if (isset($check) && isset($imeia)){
     
                     $DB->update(
                         'glpi_plugin_dtisuite_imeis', [
@@ -103,11 +90,11 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
                         ]
                         );
                 }
-                if (!isset($check) || $check = "A113"){
+                if (!isset($check)){
     
                     $DB->insert(
                         'glpi_plugin_dtisuite_imeis', [
-                            'id' => '0',
+                            'id' => '',
                             "{$typeequipment}s_id" => "$compid",
                             'imei_a' => "$imeia",
                             'imei_b'=>"$imeib"
@@ -140,13 +127,8 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
 
             $result=$DB->query($query);
             $first=$result->fetch_assoc();
-            
-            if(isset($first['typeid']) && !empty($first['typeid'])){
-                $typeid = $first['typeid'];
-            }
-            if(isset($first['typename']) && !empty($first['typename'])){
-                $type=$first['typename'];
-            }
+            $typeid = $first['typeid'];
+            $type=$first['typename'];
             
 
         
@@ -159,23 +141,9 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
 
         $result=$DB->query($query);
         $first=$result->fetch_assoc();
-        
-        if(isset($first['imei_a']) && !empty($first['imei_a'])){
+        $imeia = $first['imei_a'];
+        $imeib = $first['imei_b'];
 
-            $imeia = $first['imei_a'];
-
-        }
-        else{
-            $imeia = '';
-        }
-
-        if(isset($first['imei_b']) && !empty($first['imei_b'])){
-
-            $imeib = $first['imei_b'];
-        }
-        else{
-            $imeib = '';
-        }
 
             echo '<div class="card-body d-flex flex-wrap">';
             echo '  <div class="col-12 col-xxl-12 flex-column">';
@@ -186,14 +154,14 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
             echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
 	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >IMEI A</label>';
             echo '                      <div class="col-xxl-7  field-container">';
-		    echo '                          <input type="text" class="form-control " name="imeia" id="imeia" value="'.$imeia.'" required>';
+		    echo '                          <input type="text" id="imeia" class="form-control " name="imeia" value="'.$imeia.'" required>';
             echo '	                    </div>';
             echo '                  </div>';
 
             echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
 	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >IMEI B</label>';
             echo '                      <div class="col-xxl-7  field-container">';
-		    echo '                          <input type="text" class="form-control " name="imeib" id="imeib" value="'.$imeib.'">';
+		    echo '                          <input type="text" id="imeib" class="form-control " name="imeib" value="'.$imeib.'">';
             echo '	                    </div>';
             echo '                  </div>';
 
