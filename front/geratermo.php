@@ -55,7 +55,7 @@ require '../../../inc/includes.php';
     FROM `glpi_plugin_dtisuite_loans`
     WHERE id = {$_GET['loanid']};";
 
-    $result = $DB->query($query);
+    $result = $DB->queryOrDie($query, $DB->error());
     $first = $result->fetch_assoc();
     $equipid = $first['item_id'];
     $typeid = $first['itemtype_id'];
@@ -72,7 +72,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                 WHERE id = ".$equipid."
                 ORDER BY name ASC;";
 
-    $result = $DB->query($query);
+    $result = $DB->queryOrDie($query, $DB->error());
     $first = $result->fetch_assoc();
     $patrimonio = $first['otherserial'];
     $serial = $first['serial'];
@@ -87,7 +87,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
     WHERE id = ".$fabricanteid."
     ORDER BY name ASC;";
 
-    $result = $DB->query($query);
+    $result = $DB->queryOrDie($query, $DB->error());
     $first = $result->fetch_assoc();
     $fabricante = $first['name'];
 
@@ -98,7 +98,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
     WHERE id = ".$modelsid."
     ORDER BY name ASC;";
 
-    $result = $DB->query($query);
+    $result = $DB->queryOrDie($query, $DB->error());
     $first = $result->fetch_assoc();
     $modelo = $first['name'];
 
@@ -109,7 +109,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
     WHERE id = ".$userid."
     ORDER BY name ASC;";
 
-    $result = $DB->query($query);
+    $result = $DB->queryOrDie($query, $DB->error());
     $first = $result->fetch_assoc();
     $nome = $first['firstname'];
     $sobrenome = $first['realname'];
@@ -128,7 +128,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
     WHERE id = ".$base."
     ORDER BY name ASC;";
 
-    $result = $DB->query($query);
+    $result = $DB->queryOrDie($query, $DB->error());
     $first = $result->fetch_assoc();
     $cidade = $first['town'];
     $logradouro = $first['address'];

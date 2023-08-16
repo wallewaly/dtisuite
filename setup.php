@@ -64,7 +64,7 @@ function plugin_init_dtisuite() {
         );
 
         //Add menu entry
-        $PLUGIN_HOOKS['menu_toadd']['dtisuite'] = ['management'  => 'PluginDtisuiteMenu'];
+        $PLUGIN_HOOKS['menu_toadd']['dtisuite'] = ['management'  => ['PluginDtisuiteMenutermo','PluginDtisuiteMenureportcdc']];
 
         //Add config menu entry
         $PLUGIN_HOOKS['config_page']['dtisuite'] = 'front/config.php';

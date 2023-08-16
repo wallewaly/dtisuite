@@ -67,7 +67,7 @@ class PluginDtisuiteData extends CommonDBTM {
                     AND is_active = '1'
                     ORDER BY name ASC;";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first  = $result->fetch_all();
                 
         return json_encode(array('data'=>$first));
@@ -84,7 +84,7 @@ class PluginDtisuiteData extends CommonDBTM {
                     WHERE B.name = 'Disponível'
                     ORDER BY name ASC;";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first  = $result->fetch_all();
 
         return json_encode(array('data'=>$first));
@@ -104,7 +104,7 @@ class PluginDtisuiteData extends CommonDBTM {
                     AND A.devoldate is null
                     ORDER BY name;";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first  = $result->fetch_all();
                     
         return json_encode(array('data'=>$first));
@@ -120,7 +120,7 @@ class PluginDtisuiteData extends CommonDBTM {
 $equipmenttype = $gtdata->get_equipment_type($typeid);
 
 
-        $query = "SELECT name, B.id
+        $query = "SELECT B.name, B.id
                     FROM glpi_plugin_dtisuite_loans as A
                     INNER JOIN `glpi_{$equipmenttype}s` AS B ON A.item_id = B.id
                     WHERE A.user_id = {$employee}
@@ -128,7 +128,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                     AND A.devoldate is null
                     ORDER BY name ASC;";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first  = $result->fetch_all();
 
         return json_encode(array('data'=>$first));
@@ -147,7 +147,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                     AND A.devoldate is null
                     ORDER BY name;";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first  = $result->fetch_all();
 
         return json_encode(array('data'=>$first));
@@ -165,7 +165,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                     AND realname is not null
                     ORDER BY name;";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first  = $result->fetch_assoc();
 
         return $first;
@@ -184,7 +184,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                     WHERE id = ".$equipment."
                     ORDER BY name ASC;";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
 
         return $result;
 
@@ -197,7 +197,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
         $query = "INSERT INTO `glpi_plugin_dtisuite_loans` (`id`, `user_id`, `itemtype_id`, `item_id`, `loandate`) 
                     VALUES (NULL, '{$employee}', '{$equipmenttype}', '{$equipment}', now());";
         
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         
     }
 
@@ -215,7 +215,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                     AND itemtype_id = {$typeid}
                     AND item_id = {$equipment}";
         
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
 
         return $result;
         
@@ -230,7 +230,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                     WHERE A.user_id = ".$employee."
                     AND A.devoldate is null;";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
 
         return $result;
 
@@ -255,7 +255,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                     AND item_id = {$equipment}
                     AND devoldate IS NULL;";
         
-        $first = $DB->query($query);
+        $first = $DB->queryOrDie($query, $DB->error());
         
         if(!empty($first)){
             $result = $first->fetch_assoc();
@@ -282,7 +282,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                     AND item_id = {$equipment}
                     AND devoldate IS NULL;";
         
-        $first = $DB->query($query);
+        $first = $DB->queryOrDie($query, $DB->error());
 
         if(!empty($first)){
             $result = $first->fetch_assoc();
@@ -300,15 +300,16 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
 
         global $DB;
 
-
+        $logging = new PluginDtisuiteLog();
         $gtdata = new PluginDtisuiteData();
-$equipmenttype = $gtdata->get_equipment_type($typeid);
+
+        $equipmenttype = $gtdata->get_equipment_type($typeid);
 
         $query = "SELECT groups_id as id
         FROM glpi_users
         WHERE id = {$usersid}";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first = $result->fetch_assoc();
         $groupsid = $first['id'];
 
@@ -316,15 +317,25 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
 
             $state = "Ativo";
             $setuser = $usersid;
-
-            $curruser = $_SESSION['glpifriendlyname'];
-            $curruserid = ($_SESSION['glpiID']);
             $type = ucfirst($equipmenttype);
 
-            $query = "INSERT INTO `glpi_logs` (`id`, `itemtype`, `items_id`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) 
-                      VALUES (NULL, '$type', '$equipment', '', '0', '$curruser ($curruserid)', now(), '31', 'Disponível (1)', 'Ativo (2)')
-            ";
-            $result = $DB->query($query);
+            $logging->RegisterLog('Status',$type,$equipment,'Disponível (1)', 'Ativo (2)');
+
+            $query = "SELECT groups_id
+            FROM `glpi_".$equipmenttype."s`
+            WHERE id = {$equipment}";
+
+            $result = $DB->queryOrDie($query, $DB->error());
+            $first = $result->fetch_assoc();
+            $old_cdc = $first['groups_id'];
+
+            if($old_cdc != $groupsid){
+
+                $logging->RegisterLog('CDC',$type,$equipment,$old_cdc,$groupsid);
+
+            }
+
+            $logging->RegisterLog('Usuario',$type,$equipment,'', $setuser);
 
 
         } 
@@ -337,27 +348,27 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
             $curruserid = ($_SESSION['glpiID']);
             $type = ucfirst($equipmenttype);
 
-            $query = "INSERT INTO `glpi_logs` (`id`, `itemtype`, `items_id`, `itemtype_link`, `linked_action`, `user_name`, `date_mod`, `id_search_option`, `old_value`, `new_value`) 
-                      VALUES (NULL, '$type', '$equipment', '', '0', '$curruser ($curruserid)', now(), '31', 'Ativo (2)', 'Disponível (1)')
-            ";
-           
-            $result = $DB->query($query);
-            
+            $logging->RegisterLog('Status',$type,$equipment,'Ativo (2)', 'Disponível (1)');
+            $logging->RegisterLog('Usuario',$type,$equipment,'', '0');
+
+
         }
 
+        $logging->RegisterLog('Tecnico',$equipmenttype,$equipment,'','');
+        
         $query = "SELECT id
         FROM glpi_states
         WHERE name = '$state';";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first = $result->fetch_assoc();
         $stateid = $first['id'];
 
         $query = "UPDATE `glpi_".$equipmenttype."s`
-                    SET states_id = {$stateid}, users_id = {$setuser}, groups_id = {$groupsid}
+                    SET states_id = {$stateid}, users_id = {$setuser}, groups_id = {$groupsid}, users_id_tech = {$_SESSION['glpiID']}
                     WHERE id = {$equipment}";
         
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
 
         return $result;
         
@@ -375,7 +386,7 @@ $equipmenttype = $gtdata->get_equipment_type($typeid);
                   ORDER BY id DESC
                   LIMIT 1;";
         
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first = $result->fetch_assoc();
         $loanid = $first['id'];
 

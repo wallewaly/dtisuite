@@ -55,7 +55,7 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
         WHERE ".$typeequipment."s_id = '$compid'
         ";
 
-        $result = $DB->query($query);
+        $result = $DB->queryOrDie($query, $DB->error());
         $first  = $result->fetch_assoc();
         $check = $first['id'];
 
@@ -125,7 +125,7 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
                     WHERE a.id = '".$_GET['id']."'
             ";
 
-            $result=$DB->query($query);
+            $result=$DB->queryOrDie($query, $DB->error());
             $first=$result->fetch_assoc();
             $typeid = $first['typeid'];
             $type=$first['typename'];
@@ -139,7 +139,7 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
                  WHERE ".$typeequipment."s_id = '".$_GET['id']."'
         ";
 
-        $result=$DB->query($query);
+        $result=$DB->queryOrDie($query, $DB->error());
         $first=$result->fetch_assoc();
         $imeia = $first['imei_a'];
         $imeib = $first['imei_b'];

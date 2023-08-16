@@ -28,14 +28,14 @@
  * -------------------------------------------------------------------------
  */
 
-class PluginDtisuiteMenu extends CommonGLPI
+class PluginDtisuiteMenutermo extends CommonGLPI
 {
 
 #   static $rightname = 'entities';
 
    static function getMenuName() {
 
-      return __('Gerador de termos (v2)', 'dtisuite');
+      return __('Gerador de termos [NOVO]', 'dtisuite');
    }
 
    static function getMenuContent() {

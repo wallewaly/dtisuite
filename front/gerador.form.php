@@ -31,7 +31,7 @@
 require '../../../inc/includes.php';
 
     Html::header(__("Gerar termos", "helpdesk"), $_SERVER['PHP_SELF'],
-                "management", "HelpDeskMenu", "helpdeskcontainer");
+                "management", "PluginDtisuiteMenutermo", "PluginDtisuiteContainer");
 
     Session::checkRight('plugin_dtisuite_gen_terms', READ);
 

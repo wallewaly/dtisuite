@@ -187,9 +187,4 @@ function show_loan_data($resultequip,$employeeid,$employee,$NmTpTermo){
                                                 </td>
                                             </tr>';
                     }
-                        echo '
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>';
 }

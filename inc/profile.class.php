@@ -58,7 +58,7 @@ class PluginDtisuiteProfile extends Profile
       $query = "DELETE FROM `glpi_profiles`
                 WHERE `profiles_id`='$ID'
                    AND `name` LIKE '%plugin_DTISuite%'";
-      $DB->query($query);
+      $DB->queryOrDie($query, $DB->error());
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {

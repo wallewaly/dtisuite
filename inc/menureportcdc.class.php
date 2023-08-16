@@ -28,38 +28,30 @@
  * -------------------------------------------------------------------------
  */
 
-class PluginDtisuiteMigrator extends CommonDBTM {
-    
-    function GetAllComputerLoans(){
-        
-        global $DB;
+class PluginDtisuiteMenureportcdc extends CommonGLPI
+{
 
-        $query = "SELECT A.id, A.user as user, A.cpf as cpf, A.computer_id, B.id as userid, C.id as groupid
-        FROM glpi_plugin_helpdesk_employees AS A
-        JOIN glpi_users AS B ON A.user = B.name
-        JOIN glpi_groups AS C on A.cdc = C.name
-        WHERE computer_id is not NULL
-        AND computer_id <> '0'
-        AND user is not null;";
+#   static $rightname = 'entities';
 
-        $result = $DB->queryOrDie($query, $DB->error());
+   static function getMenuName() {
 
-        while ($loan = $result->fetch_assoc()){
+      return __('Relatório de CDC [NOVO]', 'dtisuite');
+   }
 
-            //Criar query para inserir user no grupo select na table glpi_groups_users
+   static function getMenuContent() {
 
-            $mgquery = "UPDATE glpi_users
-                        SET groups_id = '".$loan['groupid']."',
-                        registration_number = '".$loan['cpf']."'
-                        WHERE id = '".$loan['userid']."';
-                        ";
+      global $CFG_GLPI;
 
-            $mgresult = $DB->query($mgquery);
+      $dtisuiteurl = "/".Plugin::getWebDir('dtisuite', false).'/front/reportcdc.form.php';
 
-            echo "CPF: ".$loan['cpf']." - User: ".$loan['userid']." - ".$loan['user']." - Grupo: ".$loan['groupid']." <br />";
-            
+      $menu = [
+         'title' => self::getMenuName(),
+         'page'  => $dtisuiteurl,
+         'icon'  => 'fas fa-file-excel',
+      ];
 
-        }
-    }
+      return $menu;
+      
+   }
 
 }
