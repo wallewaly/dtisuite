@@ -28,30 +28,30 @@
  * -------------------------------------------------------------------------
  */
 
-class PluginDtisuiteMenureportcdc extends CommonGLPI
-{
+class PluginDtisuiteMenureportcdc extends CommonGLPI{
 
-#   static $rightname = 'entities';
+   static $rightname = 'plugin_dtisuite_cdc_report';
+   
+      static function getMenuName() {
 
-   static function getMenuName() {
+         return __('Relatório de CDC [NOVO]', 'dtisuite');
+      }
 
-      return __('Relatório de CDC [NOVO]', 'dtisuite');
-   }
+      static function getMenuContent() {
 
-   static function getMenuContent() {
+         global $CFG_GLPI;
 
-      global $CFG_GLPI;
+         $dtisuiteurl = "/".Plugin::getWebDir('dtisuite', false).'/front/reportcdc.form.php';
+         if (Session::haveRight(static::$rightname, READ)) {
+            $menu = [
+               'title' => self::getMenuName(),
+               'page'  => $dtisuiteurl,
+               'icon'  => 'fas fa-file-excel',
+            ];
 
-      $dtisuiteurl = "/".Plugin::getWebDir('dtisuite', false).'/front/reportcdc.form.php';
+            return $menu;
 
-      $menu = [
-         'title' => self::getMenuName(),
-         'page'  => $dtisuiteurl,
-         'icon'  => 'fas fa-file-excel',
-      ];
-
-      return $menu;
-      
-   }
-
+         }
+         
+      }
 }

@@ -31,7 +31,7 @@
 class PluginDtisuiteMenutermo extends CommonGLPI
 {
 
-#   static $rightname = 'entities';
+   static $rightname = 'plugin_dtisuite_gen_terms';
 
    static function getMenuName() {
 
@@ -44,13 +44,17 @@ class PluginDtisuiteMenutermo extends CommonGLPI
 
       $dtisuiteurl = "/".Plugin::getWebDir('dtisuite', false).'/front/gerador.form.php';
 
-      $menu = [
-         'title' => self::getMenuName(),
-         'page'  => $dtisuiteurl,
-         'icon'  => 'fas fa-file-pdf',
-      ];
+      if (Session::haveRight(static::$rightname, READ)) {
 
-      return $menu;
+         $menu = [
+            'title' => self::getMenuName(),
+            'page'  => $dtisuiteurl,
+            'icon'  => 'fas fa-file-pdf',
+         ];
+
+         return $menu;
+
+      }
       
    }
 

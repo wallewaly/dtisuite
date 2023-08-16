@@ -34,7 +34,7 @@ include ("../../../inc/includes.php");
 Html::header(__("Report de troca de CDC", "helpdesk"), $_SERVER['PHP_SELF'],
             "management", "PluginDtisuiteMenureportcdc", "PluginDtisuiteContainerReport");
 
-Session::checkRight('plugin_dtisuite_gen_terms', READ);
+Session::checkRight('plugin_dtisuite_cdc_report', READ);
 
 
 global $DB;
