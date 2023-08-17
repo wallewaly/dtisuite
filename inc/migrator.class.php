@@ -186,7 +186,7 @@ class PluginDtisuiteMigrator extends CommonDBTM {
 
                 }
                 else{
-                    echo "Erro ao importar dados do monitor " . $loan['monitor'] . "<br />";
+                    echo "Erro ao importar dados do monitor " . $loan['monitor_id'] . "<br />";
                 }
 
             }

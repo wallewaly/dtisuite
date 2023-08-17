@@ -92,8 +92,8 @@ function plugin_dtisuite_uninstall() {
     return true;
 }
 
-function plugin_dtisuite_itemimeiupdate_called (CommonDBTM $item) {
-    PluginDtisuiteImeiinfo::UpdateImeiInfo($item);
+function plugin_dtisuite_itemimeiupdate (CommonDBTM $item) {
+   PluginDtisuiteImeiinfo::UpdateImeiInfo($item);
 }
 
 function plugin_dtisuite_computerpreItemForm($params){

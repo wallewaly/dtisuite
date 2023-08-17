@@ -32,7 +32,7 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
 
     static function UpdateImeiInfo($item){
         global $DB;
-        
+      
         $compid = $_POST['id'];
         $imeia = $_POST['imeia'];
         $imeib = $_POST['imeib'];
@@ -55,7 +55,7 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
         WHERE ".$typeequipment."s_id = '$compid'
         ";
 
-        $result = $DB->queryOrDie($query, $DB->error());
+        $result = $DB->query($query);
         $first  = $result->fetch_assoc();
         $check = $first['id'];
 
@@ -78,6 +78,7 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
                             "{$typeequipment}s_id" => "$compid"
                         ]
                         );
+
                 
                 }
                 if (isset($check) && isset($imeia)){
@@ -89,19 +90,20 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
                             "{$typeequipment}s_id" => "$compid"
                         ]
                         );
+
                 }
                 if (!isset($check)){
     
                     $DB->insert(
                         'glpi_plugin_dtisuite_imeis', [
-                            'id' => '',
+                            'id' => '0',
                             "{$typeequipment}s_id" => "$compid",
                             'imei_a' => "$imeia",
                             'imei_b'=>"$imeib"
                         ]
                     );
                 } 
-            }             
+            }            
         }
     }
     
@@ -141,8 +143,18 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
 
         $result=$DB->queryOrDie($query, $DB->error());
         $first=$result->fetch_assoc();
-        $imeia = $first['imei_a'];
-        $imeib = $first['imei_b'];
+        if(isset($first['imei_a'])){
+            $imeia = $first['imei_a'];
+        }
+        else{
+            $imeia = "";
+        }
+        if(isset($first['imei_b'])){
+            $imeib = $first['imei_b'];
+        }
+        else{
+            $imeib = "";
+        }
 
 
             echo '<div class="card-body d-flex flex-wrap">';
@@ -154,14 +166,14 @@ class PluginDtisuiteImeiinfo extends CommonDBTM {
             echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
 	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >IMEI A</label>';
             echo '                      <div class="col-xxl-7  field-container">';
-		    echo '                          <input type="text" id="imeia" class="form-control " name="imeia" value="'.$imeia.'" required>';
+		    echo '                          <input type="text" id="imeia" class="form-control " name="imeia" value="'.$imeia.'" required autocomplete="off">';
             echo '	                    </div>';
             echo '                  </div>';
 
             echo '                  <div class="form-field row col-12 col-sm-6  mb-2">';
 	        echo '                      <label class="col-form-label col-xxl-5 text-xxl-end" >IMEI B</label>';
             echo '                      <div class="col-xxl-7  field-container">';
-		    echo '                          <input type="text" id="imeib" class="form-control " name="imeib" value="'.$imeib.'">';
+		    echo '                          <input type="text" id="imeib" class="form-control " name="imeib" value="'.$imeib.'" autocomplete="off">';
             echo '	                    </div>';
             echo '                  </div>';
 

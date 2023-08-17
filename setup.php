@@ -71,8 +71,8 @@ function plugin_init_dtisuite() {
 
         //Capture events data on action
         $PLUGIN_HOOKS['pre_item_update']['dtisuite'] = [
-            'Computer' => 'dtisuite_itemimeiupdate_called',
-            'Phone' => 'dtisuite_itemimeiupdate_called'
+            'Computer' => 'plugin_dtisuite_itemimeiupdate',
+            'Phone' => 'plugin_dtisuite_itemimeiupdate'
         ];
 
         //Add form on top of item page
