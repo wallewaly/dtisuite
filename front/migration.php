@@ -30,7 +30,7 @@
 
 require '../../../inc/includes.php';
 
-    Html::header(__("Gerar termos", "helpdesk"), $_SERVER['PHP_SELF'],
+    Html::header(__("Migração de empréstimos", "helpdesk"), $_SERVER['PHP_SELF'],
                 "management", "HelpDeskMenu", "helpdeskcontainer");
 
     Session::checkRight('config', READ);
